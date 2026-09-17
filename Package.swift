@@ -3,7 +3,7 @@ import CompilerPluginSupport
 import PackageDescription
 
 let package = Package(
-    name: "swift-apomorphism-derivation",
+    name: "swift-apomorphism",
     platforms: [
         .macOS(.v27),
         .iOS(.v27),
@@ -12,32 +12,32 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-        .library(name: "Apomorphism Derivation", targets: ["Apomorphism Derivation"]),
-        .library(name: "Apomorphism Derivation Core", targets: ["Apomorphism Derivation Core"]),
+        .library(name: "Apomorphism Macro", targets: ["Apomorphism Macro"]),
+        .library(name: "Apomorphism Macro Core", targets: ["Apomorphism Macro Core"]),
     ],
     dependencies: [
         .package(url: "https://github.com/swift-atoms/swift-either.git", branch: "main"),
-        .package(url: "https://github.com/swift-molecules/swift-corecursive-derivation.git", branch: "main"),
+        .package(url: "https://github.com/swift-molecules/swift-corecursive.git", branch: "main"),
         .package(url: "https://github.com/swiftlang/swift-syntax.git", "603.0.2"..<"604.0.0"),
     ],
     targets: [
-        .target(name: "Apomorphism Derivation Core", dependencies: [
-            .product(name: "Corecursive Derivation Core", package: "swift-corecursive-derivation"),
+        .target(name: "Apomorphism Macro Core", dependencies: [
+            .product(name: "Corecursive Macro Core", package: "swift-corecursive"),
             .product(name: "SwiftSyntax", package: "swift-syntax"),
             .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
         ]),
-        .macro(name: "Apomorphism Derivation Macros", dependencies: [
-            "Apomorphism Derivation Core",
+        .macro(name: "Apomorphism Macro Plugin", dependencies: [
+            "Apomorphism Macro Core",
             .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
             .product(name: "SwiftSyntax", package: "swift-syntax"),
             .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
         ]),
-        .target(name: "Apomorphism Derivation", dependencies: [
-            "Apomorphism Derivation Macros",
+        .target(name: "Apomorphism Macro", dependencies: [
+            "Apomorphism Macro Plugin",
             .product(name: "Either", package: "swift-either"),
         ]),
-        .testTarget(name: "Apomorphism Derivation Tests", dependencies: [
-            "Apomorphism Derivation",
+        .testTarget(name: "Apomorphism Macro Tests", dependencies: [
+            "Apomorphism Macro",
             .product(name: "Either", package: "swift-either"),
         ]),
     ],

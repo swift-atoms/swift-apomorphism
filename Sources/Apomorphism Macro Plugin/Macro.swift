@@ -1,4 +1,4 @@
-import Apomorphism_Derivation_Core
+import Apomorphism_Macro_Core
 import SwiftSyntax
 import SwiftSyntaxMacros
 public struct Macro: MemberMacro {
