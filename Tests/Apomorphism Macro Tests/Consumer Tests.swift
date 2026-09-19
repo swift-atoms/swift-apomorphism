@@ -1,7 +1,11 @@
+import Corecursive_Macro
+import Functor_Base_Macro
 import Apomorphism_Macro
 import Either
 import Testing
 
+@Corecursive
+@FunctorBase
 @Apomorphism
 private indirect enum Natural {
     case zero
