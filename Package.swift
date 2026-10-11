@@ -26,19 +26,19 @@ let package = Package(
             .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
         ]),
         .macro(name: "Apomorphism Macro Plugin", dependencies: [
-            "Apomorphism Macro Core",
+            .target(name: "Apomorphism Macro Core"),
             .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
             .product(name: "SwiftSyntax", package: "swift-syntax"),
             .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
         ]),
         .target(name: "Apomorphism Macro", dependencies: [
-            "Apomorphism Macro Plugin",
+            .target(name: "Apomorphism Macro Plugin"),
             .product(name: "Either", package: "swift-either"),
         ]),
         .testTarget(name: "Apomorphism Macro Tests", dependencies: [
                 .product(name: "Functor Base Macro", package: "swift-functor"),
                 .product(name: "Corecursive Macro", package: "swift-corecursive"),
-            "Apomorphism Macro",
+            .target(name: "Apomorphism Macro"),
             .product(name: "Either", package: "swift-either"),
         ]),
     ],
@@ -46,21 +46,14 @@ let package = Package(
 )
 
 for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    let ecosystem: [SwiftSetting] = [
+    target.swiftSettings = (target.swiftSettings ?? []) + [
         .strictMemorySafety(),
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
         .enableUpcomingFeature("MemberImportVisibility"),
         .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-        .enableExperimentalFeature("Lifetimes"),
         .enableUpcomingFeature("InferIsolatedConformances"),
+        .enableExperimentalFeature("Lifetimes"),
+        .treatAllWarnings(as: .error),
     ]
-    let package: [SwiftSetting] = []
-
-    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
-}
-
-// Consumer compilation must reject visibility regressions, even when other packages suppress warnings.
-for target in package.targets where target.type == .test || target.name.hasSuffix("Consumer Fixtures") {
-    target.swiftSettings = (target.swiftSettings ?? []) + [.treatAllWarnings(as: .error)]
 }
