@@ -1,7 +1,7 @@
-import Corecursive_Macro
-import Functor_Base_Macro
 import Apomorphism_Macro
+import Corecursive_Macro
 import Either
+import Functor_Base_Macro
 import Testing
 
 @Corecursive

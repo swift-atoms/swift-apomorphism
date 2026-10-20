@@ -1,7 +1,7 @@
-import Corecursive_Macro
-import Functor_Base_Macro
 import Apomorphism_Macro
+import Corecursive_Macro
 import Either
+import Functor_Base_Macro
 import Testing
 
 @Corecursive
@@ -15,7 +15,7 @@ private indirect enum Count {
 private func depth(_ value: Count) -> Int {
     switch value {
     case .zero: 0
-    case let .successor(child): depth(child) + 1
+    case .successor(let child): depth(child) + 1
     }
 }
 
